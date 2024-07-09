@@ -1,9 +1,9 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import DetailsScreen from '../DetailsScreen';
-import HomeScreen from '../HomeScreen';
 import { observer } from 'mobx-react-lite';
-import { NavigationProps } from '../model/app.model';
+import { NavigationProps } from 'app/model/App.model';
+import HomeScreen from 'app/screens/HomeScreen';
+import DetailsScreen from 'app/screens/DetailsScreen';
 
 const Stack = createStackNavigator();
 

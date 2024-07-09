@@ -1,14 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Platform } from 'react-native';
-import ImageViewer from './components/ImageViewer';
-import ButtonCustom from './components/Button';
+import ImageViewer from 'app/components/ImageViewer';
+import ButtonCustom from 'app/components/Button';
 import * as ImagePicker from 'expo-image-picker';
 import { useRef, useState } from 'react';
-import IconButton from './components/IconButton';
-import CircleButton from './components/CircleButton';
-import EmojiList from './components/EmojiList';
-import EmojiPicker from './components/EmojiPicker';
-import EmojiSticker from './components/EmojiSticker';
+import IconButton from 'app/components/IconButton';
+import CircleButton from 'app/components/CircleButton';
+import EmojiList from 'app/components/EmojiList';
+import EmojiPicker from 'app/components/EmojiPicker';
+import EmojiSticker from 'app/components/EmojiSticker';
 import { captureRef } from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
 import DiskImage from 'dom-to-image';
@@ -18,7 +18,7 @@ export default function Main() {
     const [showAppOptions, setShowAppOptions] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [pickedEmoji, setPickedEmoji] = useState(null);
-    const PlaceholderImage = require('../assets/images/background-image.png')
+    const PlaceholderImage = require('assets/images/background-image.png')
 
     const imageRef = useRef();
     const pickImageAsync = async () => {
