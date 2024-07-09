@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import DetailsScreen from '../DetailsScreen';
 import HomeScreen from '../HomeScreen';
 import { observer } from 'mobx-react-lite';
-import { NavigationProps } from '../../model/app.model';
+import { NavigationProps } from '../model/app.model';
 
 const Stack = createStackNavigator();
 

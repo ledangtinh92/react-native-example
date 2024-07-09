@@ -1,7 +1,7 @@
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { AppProps } from '../model/app.model';
+import { AppProps } from './model/app.model';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './HomeScreen';
