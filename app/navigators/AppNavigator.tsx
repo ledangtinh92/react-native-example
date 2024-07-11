@@ -7,6 +7,7 @@ import DetailsScreen from 'app/screens/DetailsScreen';
 import TopNav from 'app/navigators/TopNav';
 import DrawerScreen from 'app/screens/DrawerScreen';
 import { navigationRef } from 'app/navigators/NavigationUtilities';
+import * as screens from 'app/screens'
 
 const Stack = createStackNavigator();
 
@@ -52,7 +53,7 @@ export const AppNavigator = observer(function AppNavigator(props: NavigationProp
                     //     }
                     // }
                 } }
-                initialRouteName={ "Notifications" }
+                initialRouteName={ "Home" }
             >
                 <Stack.Screen
                     options={
