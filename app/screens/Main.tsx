@@ -1,5 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, Platform } from 'react-native';
+import {
+    StyleSheet,
+    View,
+    Platform,
+    Text,
+    PanResponder,
+    TouchableWithoutFeedback,
+    UIManager,
+    findNodeHandle
+} from 'react-native';
 import ImageViewer from 'app/components/ImageViewer';
 import ButtonCustom from 'app/components/Button';
 import * as ImagePicker from 'expo-image-picker';
@@ -20,7 +29,10 @@ export default function Main() {
     const [pickedEmoji, setPickedEmoji] = useState(null);
     const PlaceholderImage = require('assets/images/background-image.png')
 
-    const imageRef = useRef();
+    const [position, setPosition] = useState({x: 0, y: 0});
+    const [dragging, setDragging] = useState(false);
+
+    const imageRef = useRef<View | null>(null);
     const pickImageAsync = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
@@ -38,6 +50,7 @@ export default function Main() {
 
     const onReset = () => {
         setShowAppOptions(false);
+        setPickedEmoji(null);
     };
 
     const onAddSticker = () => {
@@ -80,10 +93,52 @@ export default function Main() {
         }
     };
 
+    const panResponder = useRef(
+        PanResponder.create({
+            onStartShouldSetPanResponder: () => true,
+            onPanResponderGrant: (evt, gestureState) => {
+                setDragging(true);
+                setPosition({
+                    x: gestureState.x0,
+                    y: gestureState.y0
+                });
+                //console.log("onPanResponderGrant" + dragging);
+                //console.log("onPanResponderGrant  " + position.x + " " + position.y);
+            },
+            onPanResponderMove: (evt, gestureState) => {
+                setPosition({
+                    x: gestureState.moveX,
+                    y: gestureState.moveY
+                });
+                if (imageRef.current) {
+                    const handle = findNodeHandle(imageRef.current);
+                    if (handle) {
+                        UIManager.measure(handle, (x, y, width, height, pageX, pageY) => {
+                            console.log('Position XX:', x);
+                            console.log('Position YY:', y);
+                            console.log('Position X:', pageX);
+                            console.log('Position Y:', pageY);
+                            console.log('Width:', width);
+                            console.log('Height:', height);
+                        });
+                    }
+                }
+
+
+                //console.log("onPanResponderMove  " + gestureState.moveX + " " + gestureState.moveY);
+            },
+            onPanResponderRelease: () => {
+                setDragging(false);
+            }
+        })
+    ).current;
+
+
     return (
-        <View>
-            <View style={ styles.imageContainer }>
-                <View ref={ imageRef } collapsable={ false }>
+        <View style={ styles.mainContainer }>
+            <View style={ styles.imageContainer } { ...panResponder.panHandlers }>
+                <View style={ styles.images } ref={ imageRef } collapsable={ false }
+                >
                     <ImageViewer placeholderImageSource={ PlaceholderImage } selectedImage={ selectedImage }/>
                     { pickedEmoji && <EmojiSticker imageSize={ 40 } stickerSource={ pickedEmoji }/> }
                 </View>
@@ -98,8 +153,8 @@ export default function Main() {
                 </View>
             ) : (
                 <View style={ styles.footerContainer }>
-                    <ButtonCustom onPress={ pickImageAsync } label="Choose a photo1" theme="primary"/>
-                    <ButtonCustom onPress={ () => setShowAppOptions(true) } label="Use this photo1" theme=""/>
+                    { <ButtonCustom onPress={ pickImageAsync } label="Choose a photo1" theme="primary"/> }
+                    { <ButtonCustom onPress={ () => setShowAppOptions(true) } label="Use this photo1" theme=""/> }
                 </View>
             ) }
             <EmojiPicker isVisible={ isModalVisible } onClose={ onModalClose }>
@@ -111,22 +166,27 @@ export default function Main() {
 }
 
 const styles = StyleSheet.create({
-    imageContainer: {
-        //paddingTop: 10
-    },
-    footerContainer: {
-        alignItems: 'center',
-        paddingBottom: 10,
+    mainContainer: {
         flex: 1,
-        flexDirection: 'column',
-        gap: 5
+        flexDirection: 'column'
+    },
+    imageContainer: {
+        flexGrow: 1
     },
     optionsContainer: {
-        position: 'absolute',
-        bottom: 10
+        flexShrink: 1
+    },
+    footerContainer: {
+        flexShrink: 1,
+        alignItems: 'center'
     },
     optionsRow: {
-        alignItems: 'center',
+        justifyContent: 'space-around',
         flexDirection: 'row'
+    },
+    images: {
+        flex: 1,
+        width: '90%',
+        alignSelf: 'center'
     }
 });

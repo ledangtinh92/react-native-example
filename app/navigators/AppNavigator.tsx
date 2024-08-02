@@ -7,14 +7,15 @@ import DetailsScreen from 'app/screens/DetailsScreen';
 import TopNav from 'app/navigators/TopNav';
 import DrawerScreen from 'app/screens/DrawerScreen';
 import { navigationRef } from 'app/navigators/NavigationUtilities';
-import * as screens from 'app/screens'
+import TabHomeScreen from 'app/screens/TabHomeScreen';
 
 const Stack = createStackNavigator();
 
 export type AppStackParamList = {
     Home: undefined
     Details: undefined
-    Notifications: undefined
+    DrawerNavigator: undefined
+    TabHomeScreen: undefined
 }
 
 export const AppNavigator = observer(function AppNavigator(props: NavigationProps) {
@@ -76,8 +77,17 @@ export const AppNavigator = observer(function AppNavigator(props: NavigationProp
                             headerShown: false
                         }
                     }
-                    name="Notifications"
+                    name="DrawerNavigator"
                     component={ DrawerScreen }
+                />
+                <Stack.Screen
+                    options={
+                        {
+                            headerShown: false
+                        }
+                    }
+                    name="TabHomeScreen"
+                    component={ TabHomeScreen }
                 />
             </Stack.Navigator>
         </NavigationContainer>
